@@ -135,3 +135,39 @@ ggplot(filtered_region_mod_summary, aes(x = region, y = n_mods, fill = region)) 
     axis.text.x = element_blank()  # this removes tick labels under bars
   )
 ```
+
+### Next export the subset file as bed to run bedtools intersect (must be done unix) to line up with reference file and output as fasta
+
+```
+m6A_subset %>%
+  filter(code == "a") %>%
+  dplyr::select(chrom, start, end, code, n_valid_cov, strand) %>%
+  distinct(chrom, start, end, .keep_all = T) %>%
+  arrange(chrom, start) %>%
+  mutate(start = start - 3,
+         end = end + 3) %>%
+  write.table("C:/extract/to/bedfile.bed",
+              col.names = F, row.names = F, sep = "\t", quote = F)
+```
+
+### Next code can NOT be run in Rstudio, must export to a UNIX shell
+
+next part must be run on Unix with bedtools installed to run the intersect on the bed file with the known fasta reference
+```
+./bedtools getfasta -s -fi "reference_toplevel.fa" -bed "C:/extract/to/bedfile.bed" > "bedfile_nowfa.fasta"
+
+samtools faidx bedfile_nowfa.fasta"
+```
+
+### Using pA lengths from original basecalling for analyses
+
+```
+m6A_subset_tails <- m6A_subset %>%
+  mutate(
+    tail_length_group = case_when(
+      mean_tail_length <= quantile(mean_tail_length, 0.25, na.rm = TRUE) ~ "short",
+      mean_tail_length >= quantile(mean_tail_length, 0.75, na.rm = TRUE) ~ "long",
+      TRUE ~ "medium"
+    )
+  )
+```
