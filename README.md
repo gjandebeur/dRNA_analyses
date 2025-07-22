@@ -13,7 +13,7 @@ library(GenomicRanges)
 library(txdbmaker)
 ```
 
-setwd and import m6A_subset from "m6A_subset_all.tsv"
+setwd and import m6A_subset from "m6A_subset_allstats.tsv"
 
 ### Plot data from filtered file, coverage & percent modified
 This can and should be scaled up with more modification types and samples 
@@ -138,6 +138,43 @@ ggplot(filtered_region_mod_summary, aes(x = region, y = n_mods, fill = region)) 
 <img width="1200" height="900" alt="githubexample_genomicregions" src="https://github.com/user-attachments/assets/fd1854b8-5856-433d-ab47-8c1002879210" />
 
 
+### GO Enrichment Analyses
+```
+#First load in GO term file to produce the background
+
+background <- read_delim("arabidopsis_go_terms.txt", 
+delim = "\t", escape_double = FALSE,  
+trim_ws = TRUE) %>% 
+dplyr::select(3,1) %>% 
+dplyr::rename(term = 1, gene = 2)
+
+ 
+
+m6a_genes <- final_filtered_data %>%
+   filter(mod == "m6A") %>%
+   distinct(gene_id)
+m6a_genes <- m6a_genes %>%
+  mutate(gene_id = sub("^gene:", "", gene_id))
+ego <- enricher(
+  m6a_genes$gene_id,
+  pvalueCutoff = 0.05,
+  pAdjustMethod = "BH",
+  universe = background$gene,
+  minGSSize = 10,
+  maxGSSize = 500,
+  qvalueCutoff = 0.05,
+  gson = NULL,
+  TERM2GENE =  goterms
+  )
+
+
+hyper_ego <- mutate(ego, FoldEnrichment = parse_ratio(GeneRatio) / parse_ratio(BgRatio))
+
+dotplot(hyper_ego, x="FoldEnrichment") +
+  ggtitle("m6A modified genes") +
+  theme_cowplot(16)
+
+
 ### Next export the subset file as bed to run bedtools intersect (must be done unix) to line up with reference file and output as fasta
 
 ```
@@ -152,9 +189,8 @@ m6A_subset %>%
               col.names = F, row.names = F, sep = "\t", quote = F)
 ```
 
-### Next code can NOT be run in Rstudio, must export to a UNIX shell
-
-next part must be run on Unix with bedtools installed to run the intersect on the bed file with the known fasta reference
+### Next code can NOT be run in RStudio, must export to a UNIX shell
+The next part must be run on Unix with bedtools installed to run the intersect on the bed file with the known fasta reference
 ```
 ./bedtools getfasta -s -fi "reference_toplevel.fa" -bed "C:/extract/to/bedfile.bed" > "bedfile_nowfa.fasta"
 
@@ -174,7 +210,15 @@ m6A_subset_tails <- m6A_subset %>%
   )
 ```
 
-### Label PolyA tail Categories for Visualization 
-
+After all library prep is done can plot multiple variables against, like plotting CPM, stoich, and polyA length
+(This graph has no correlation due to the subset but minor trends can be viewed with biological data)
+```
+ggplot(m6A_subset, aes(x = mean_CPM, y = tail_length)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE) +
+  scale_x_log10() +
+  labs(title = "Expression vs PolyA Tail Length (All Species)", x = "Mean CPM (log scale)", y = "Mean PolyA Tail Length") +
+  theme_minimal(base_size = 14)
+  ```
 
 
