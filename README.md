@@ -108,6 +108,7 @@ table(m6A_subset$region)
 ```
 
 ### Now plotting genomic ranges
+
 ```
 region_mod_summary <- m6A_subset %>%
   group_by(region, mod) %>%
@@ -148,8 +149,6 @@ trim_ws = TRUE) %>%
 dplyr::select(3,1) %>% 
 dplyr::rename(term = 1, gene = 2)
 
- 
-
 m6a_genes <- final_filtered_data %>%
    filter(mod == "m6A") %>%
    distinct(gene_id)
@@ -173,7 +172,7 @@ hyper_ego <- mutate(ego, FoldEnrichment = parse_ratio(GeneRatio) / parse_ratio(B
 dotplot(hyper_ego, x="FoldEnrichment") +
   ggtitle("m6A modified genes") +
   theme_cowplot(16)
-
+```
 
 ### Next export the subset file as bed to run bedtools intersect (must be done unix) to line up with reference file and output as fasta
 
@@ -220,5 +219,6 @@ ggplot(m6A_subset, aes(x = mean_CPM, y = tail_length)) +
   labs(title = "Expression vs PolyA Tail Length (All Species)", x = "Mean CPM (log scale)", y = "Mean PolyA Tail Length") +
   theme_minimal(base_size = 14)
   ```
+<img width="1200" height="900" alt="githubexample_CPMSTOICH_AND_POLYA" src="https://github.com/user-attachments/assets/db10c5fd-0015-4d89-a92a-318c0db87ab9" />
 
 
