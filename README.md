@@ -30,7 +30,7 @@ ggplot(m6A_subset, aes(x = avg_n_valid_cov, y = avg_percent_modified, color = mo
   ) +
   theme_classic(base_size = 14)
 ```
-<img width="2400" height="1800" alt="githubexample_coverage_percentmodified" src="https://github.com/user-attachments/assets/9aa987d0-7218-4c6d-8df4-c3c9030b8554" />
+<img width="1800" height="1200" alt="githubexample_coverage_percentmodified" src="https://github.com/user-attachments/assets/9aa987d0-7218-4c6d-8df4-c3c9030b8554" />
 
 
 load in txdb from gtf file (provided in files)
