@@ -135,7 +135,7 @@ ggplot(filtered_region_mod_summary, aes(x = region, y = n_mods, fill = region)) 
     axis.text.x = element_blank()  # this removes tick labels under bars
   )
 ```
-<img width="1200" height="900" alt="githubexample_genomicregions" src="https://github.com/user-attachments/assets/9b0ae181-36e2-4679-b4ba-f18c7cd0d6b6" />
+<img width="1200" height="900" alt="githubexample_genomicregions" src="https://github.com/user-attachments/assets/fd1854b8-5856-433d-ab47-8c1002879210" />
 
 
 ### Next export the subset file as bed to run bedtools intersect (must be done unix) to line up with reference file and output as fasta
