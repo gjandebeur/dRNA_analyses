@@ -173,6 +173,7 @@ dotplot(hyper_ego, x="FoldEnrichment") +
   ggtitle("m6A modified genes") +
   theme_cowplot(16)
 ```
+<img width="1200" height="900" alt="GO_no_methylation" src="https://github.com/user-attachments/assets/b8ff7677-7e77-488a-81bf-4e598e9aa57e" />
 
 ### Next export the subset file as bed to run bedtools intersect (must be done unix) to line up with reference file and output as fasta
 
