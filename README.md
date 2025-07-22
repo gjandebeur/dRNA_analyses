@@ -11,14 +11,12 @@ library(patchwork)
 library(ggplot2)
 library(GenomicRanges)
 library(txdbmaker)
-
-
 ```
 
-setwd and import m6A_subset from "m6A_subset_Arabidopsis.tsv"
+setwd and import m6A_subset from "m6A_subset_all.tsv"
 
 ### Plot data from filtered file, coverage & percent modified
-
+This can and should be scaled up with more modification types and samples 
 ```
 ggplot(m6A_subset, aes(x = avg_n_valid_cov, y = avg_percent_modified, color = mod)) +
   geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs"), se = FALSE, linewidth = 1.2) +
@@ -32,6 +30,7 @@ ggplot(m6A_subset, aes(x = avg_n_valid_cov, y = avg_percent_modified, color = mo
   ) +
   theme_classic(base_size = 14)
 ```
+<img width="2400" height="1800" alt="githubexample_coverage_percentmodified" src="https://github.com/user-attachments/assets/9aa987d0-7218-4c6d-8df4-c3c9030b8554" />
 
 
 load in txdb from gtf file (provided in files)
@@ -118,6 +117,7 @@ filtered_region_mod_summary <- region_mod_summary %>%
   filter(mod %in% c("pseU", "m6A"))
 
 #Now Actually Plot
+## This can be easily scaled up with other modification types or species
 
 ggplot(filtered_region_mod_summary, aes(x = region, y = n_mods, fill = region)) +
   geom_bar(stat = "identity", position = "dodge") +
@@ -135,6 +135,8 @@ ggplot(filtered_region_mod_summary, aes(x = region, y = n_mods, fill = region)) 
     axis.text.x = element_blank()  # this removes tick labels under bars
   )
 ```
+<img width="2400" height="1800" alt="githubexample_genomicregions" src="https://github.com/user-attachments/assets/9b0ae181-36e2-4679-b4ba-f18c7cd0d6b6" />
+
 
 ### Next export the subset file as bed to run bedtools intersect (must be done unix) to line up with reference file and output as fasta
 
@@ -171,3 +173,8 @@ m6A_subset_tails <- m6A_subset %>%
     )
   )
 ```
+
+### Label PolyA tail Categories for Visualization 
+
+
+
