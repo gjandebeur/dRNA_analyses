@@ -30,7 +30,7 @@ ggplot(m6A_subset, aes(x = avg_n_valid_cov, y = avg_percent_modified, color = mo
   ) +
   theme_classic(base_size = 14)
 ```
-<img width="1800" height="1200" alt="githubexample_coverage_percentmodified" src="https://github.com/user-attachments/assets/9aa987d0-7218-4c6d-8df4-c3c9030b8554" />
+<img width="1200" height="800" alt="githubexample_coverage_percentmodified" src="https://github.com/user-attachments/assets/9aa987d0-7218-4c6d-8df4-c3c9030b8554" />
 
 
 load in txdb from gtf file (provided in files)
@@ -135,7 +135,7 @@ ggplot(filtered_region_mod_summary, aes(x = region, y = n_mods, fill = region)) 
     axis.text.x = element_blank()  # this removes tick labels under bars
   )
 ```
-<img width="2400" height="1800" alt="githubexample_genomicregions" src="https://github.com/user-attachments/assets/9b0ae181-36e2-4679-b4ba-f18c7cd0d6b6" />
+<img width="1200" height="900" alt="githubexample_genomicregions" src="https://github.com/user-attachments/assets/9b0ae181-36e2-4679-b4ba-f18c7cd0d6b6" />
 
 
 ### Next export the subset file as bed to run bedtools intersect (must be done unix) to line up with reference file and output as fasta
